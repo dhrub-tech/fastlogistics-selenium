@@ -76,10 +76,6 @@ FastLogistics-Selenium
 
 1. Clone the repository
 
-```
-git clone https://github.com/dhrub-tech/fastlogistics-selenium.git
-```
-
 2. Open the project in Eclipse or VS Code.
 
 3. Install Maven dependencies.

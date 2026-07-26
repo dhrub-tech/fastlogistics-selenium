@@ -1,79 +1,171 @@
 package pages;
 
+
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Select;
 
-public class CreateShipmentPage 
-{
-
-private WebDriver driver;
-
-private By shipmentId = By.id("shipmentId");
-private By senderName = By.id("senderName");
-private By receiverName = By.id("receiverName");
-private By sourceCity = By.id("sourceCity");
-private By destinationCity = By.id("destinationCity");
-private By weight = By.id("weight");
-private By shipmentType = By.id("shipmentType");
-private By createShipmentButton = By.id("createShipmentButton");
-private By shipmentMessage = By.id("shipmentMessage");
 
 
-public CreateShipmentPage(WebDriver driver) 
-{this.driver = driver;
-	}
+public class CreateShipmentPage extends BasePage {
 
-public void enterShipmentId(String id) // Enter shipment ID
-{driver.findElement(shipmentId).sendKeys(id);
-	}
 
-public void enterSenderName(String sender) 	// Enter sender name
-{driver.findElement(senderName).sendKeys(sender);
-	}
-	public void enterReceiverName(String receiver) 	// Enter receiver name
-{driver.findElement(receiverName).sendKeys(receiver);
-	}
 
-	public void enterSourceCity(String source) 	// Enter source city
-{driver.findElement(sourceCity).sendKeys(source);
-	}
-public void enterDestinationCity(String destination) 	// Enter destination city
-{driver.findElement(destinationCity).sendKeys(destination);
-	}
-	// Enter shipment weight
-	public void enterWeight(String shipmentWeight) 
-{
-	driver.findElement(weight).sendKeys(shipmentWeight);
-	}
-	// Select shipment type
-	public void selectShipmentType(String type) {
-		Select select = new Select(driver.findElement(shipmentType));
-		select.selectByVisibleText(type);
-	}
+    // Shipment ID field
+    private By shipmentId =
+            By.id("shipmentId");
 
-	public void clickCreateShipment() 	// Click Create Shipment button
-{
-	driver.findElement(createShipmentButton).click();
-	}
 
-	// Create a shipment
-	public void createShipment(String id, String sender, String receiver,
-			String source, String destination,
-			String shipmentWeight, String type) 
-{
-		enterShipmentId(id);
-		enterSenderName(sender);
-		enterReceiverName(receiver);
-		enterSourceCity(source);
-		enterDestinationCity(destination);
-		enterWeight(shipmentWeight);
-		selectShipmentType(type);
-		clickCreateShipment();
-	}
 
-	public String getShipmentMessage() 		// Get success message
-	{return driver.findElement(shipmentMessage).getText();
-	}
+    // Sender field
+    private By senderName =
+            By.id("senderName");
+
+
+
+    // Receiver field
+    private By receiverName =
+            By.id("receiverName");
+
+
+
+    // Source city
+    private By sourceCity =
+            By.id("sourceCity");
+
+
+
+    // Destination city
+    private By destinationCity =
+            By.id("destinationCity");
+
+
+
+    // Weight field
+    private By weight =
+            By.id("weight");
+
+
+
+    // Shipment type dropdown
+    private By shipmentType =
+            By.id("shipmentType");
+
+
+
+    // Create button
+    private By createButton =
+            By.id("createShipmentButton");
+
+
+
+    // Success/Error message
+    private By message =
+            By.id("shipmentMessage");
+
+
+
+
+    public CreateShipmentPage(WebDriver driver){
+
+
+        super(driver);
+
+    }
+
+
+
+
+
+    public void createShipment(
+            String id,
+            String sender,
+            String receiver,
+            String source,
+            String destination,
+            String shipmentWeight,
+            String type){
+
+
+
+        // Enter shipment ID
+        enterText(
+                shipmentId,
+                id
+        );
+
+
+
+        // Enter sender
+        enterText(
+                senderName,
+                sender
+        );
+
+
+
+        // Enter receiver
+        enterText(
+                receiverName,
+                receiver
+        );
+
+
+
+        // Enter source
+        enterText(
+                sourceCity,
+                source
+        );
+
+
+
+        // Enter destination
+        enterText(
+                destinationCity,
+                destination
+        );
+
+
+
+        // Enter weight
+        enterText(
+                weight,
+                shipmentWeight
+        );
+
+
+
+        // Select shipment type
+        Select select =
+                new Select(
+                driver.findElement(shipmentType)
+                );
+
+
+
+        select.selectByVisibleText(type);
+
+
+
+        // Click create shipment
+        click(createButton);
+
+
+    }
+
+
+
+
+
+    public String getMessage(){
+
+
+        return getText(message);
+
+
+    }
+
 
 }

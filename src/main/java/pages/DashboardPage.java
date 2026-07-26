@@ -3,38 +3,90 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class DashboardPage 
-{
-	private WebDriver driver;
-	private By createShipmentBtn = By.id("createShipmentBtn");
-	private By searchShipmentBtn = By.id("searchShipmentBtn");
-	private By updateStatusBtn = By.id("updateStatusBtn");
-	private By logoutBtn = By.id("logoutBtn");
+/**
+ * ============================================================
+ * Page Class : DashboardPage
+ *
+ * Description:
+ * Contains all elements and actions available on the
+ * FastLogistics Dashboard page.
+ * ============================================================
+ */
+public class DashboardPage {
 
-	public DashboardPage(WebDriver driver) 
-	{
-		this.driver = driver;
-	}
-	
-	public void clickCreateShipment() 		// Click Create Shipment
-	{driver.findElement(createShipmentBtn).click();
-	}
+    private WebDriver driver;
 
-	
-	public void clickSearchShipment() 		// Click Search Shipment
-	{driver.findElement(searchShipmentBtn).click();
-	}
+    // ==========================
+    // Locators
+    // ==========================
 
-	public void clickUpdateStatus() 	// Click Update Status
-	{driver.findElement(updateStatusBtn).click();
-	}
-	private By dashboardHeading = By.tagName("h1");
+    private By createShipmentBtn = By.id("createShipmentBtn");
 
-	public String getDashboardHeading() // get dashboard heading
-	{
-		return driver.findElement(dashboardHeading).getText();
-	}
-	public void logout() 	// Logout
-	{driver.findElement(logoutBtn).click();
-	}
+    private By searchShipmentBtn = By.id("searchShipmentBtn");
+
+    private By updateStatusBtn = By.id("updateStatusBtn");
+
+    private By logoutBtn = By.id("logoutBtn");
+
+    private By dashboardHeading = By.tagName("h1");
+
+    // ==========================
+    // Constructor
+    // ==========================
+
+    public DashboardPage(WebDriver driver) {
+
+        this.driver = driver;
+
+    }
+
+    // ==========================
+    // Page Actions
+    // ==========================
+
+    /**
+     * Navigate to Create Shipment page.
+     */
+    public void clickCreateShipment() {
+
+        driver.findElement(createShipmentBtn).click();
+
+    }
+
+    /**
+     * Navigate to Search Shipment page.
+     */
+    public void clickSearchShipment() {
+
+        driver.findElement(searchShipmentBtn).click();
+
+    }
+
+    /**
+     * Navigate to Update Shipment page.
+     */
+    public void clickUpdateStatus() {
+
+        driver.findElement(updateStatusBtn).click();
+
+    }
+
+    /**
+     * Logout from the application.
+     */
+    public void clickLogout() {
+
+        driver.findElement(logoutBtn).click();
+
+    }
+
+    /**
+     * Returns Dashboard page heading.
+     */
+    public String getDashboardHeading() {
+
+        return driver.findElement(dashboardHeading).getText();
+
+    }
+
 }

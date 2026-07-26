@@ -53,12 +53,18 @@ public void verifyEmptyUsername()
 	login.login("", "admin123");
 	Assert.assertEquals(login.getErrorMessage(),"Username is required");
 }
+
 @Test
-public void verifyPasswordWithSpaces() 
+public void verifyPasswordWithSpaces()
 {
-	LoginPage login = new LoginPage(driver);
-	login.login("admin", "   ");
-	Assert.assertEquals(login.getErrorMessage(),"Invalid Username or Password");}
+    LoginPage login = new LoginPage(driver);
+
+    login.login("admin", "   ");
+
+    Assert.assertEquals(
+        login.getErrorMessage(),
+        "Password is required");
+}
 
 @Test
 public void verifyUpperCaseUsername() 

@@ -1,10 +1,12 @@
-#  FastLogistics Selenium Automation Framework
+# FastLogistics Selenium Automation Framework
 
-A Selenium automation framework developed using Java, TestNG, Maven, and the Page Object Model (POM). This project automates key workflows of the FastLogistics Shipment Management System.
+A Selenium automation framework built using **Java, Selenium WebDriver, TestNG, Maven, and Page Object Model (POM)**.
+
+This project automates the core workflows of the **FastLogistics Shipment Management System**, including login, dashboard navigation, shipment creation, search, and status update validations.
 
 ---
 
-## Technologies Used
+## Tech Stack
 
 - Java
 - Selenium WebDriver
@@ -16,83 +18,159 @@ A Selenium automation framework developed using Java, TestNG, Maven, and the Pag
 
 ---
 
-## Project Modules
+## Automated Modules
 
 ### Login Module
-- Valid Login
-- Invalid Login
-- Empty Username
-- Empty Password
-- Empty Credentials
-- Logout
-- Session Validation
 
-### Dashboard Module
-- Verify Dashboard Title
-- Verify Dashboard URL
-- Verify Navigation to Create Shipment
-- Verify Navigation to Search Shipment
-- Verify Navigation to Update Status
-- Verify Logout
+Test scenarios covered:
 
-### Create Shipment Module
-- Create Express Shipment
-- Create Standard Shipment
-- Empty Field Validation
-- Shipment Type Validation
-- Large Weight Validation
+- Valid login
+- Invalid login
+- Empty username validation
+- Empty password validation
+- Empty credential validation
+- Logout functionality
+- Session validation
 
 ---
 
-## Project Structure
+### Dashboard Module
+
+Test scenarios covered:
+
+- Verify dashboard page load
+- Verify dashboard URL
+- Navigate to Create Shipment
+- Navigate to Search Shipment
+- Navigate to Update Status
+- Verify logout functionality
+
+---
+
+### Create Shipment Module
+
+Test scenarios covered:
+
+- Create Express Shipment
+- Create Standard Shipment
+- Mandatory field validation
+- Shipment type validation
+- Weight validation
+- Invalid shipment data validation
+
+---
+
+### Search Shipment Module
+
+Test scenarios covered:
+
+- Search shipment using Shipment ID
+- Validate shipment details
+
+---
+
+### Update Shipment Status Module
+
+Test scenarios covered:
+
+- Update shipment status
+- Validate successful status update
+
+---
+
+## Framework Structure
 
 ```
 FastLogistics-Selenium
 │
-## Project Structure
-
-- BaseTest.java - Browser setup and teardown
-- LoginPage.java - Login page actions
-- DashboardPage.java - Dashboard page actions
-- CreateShipmentPage.java - Create shipment actions
-- LoginTest.java - Login test cases
-- DashboardTest.java - Dashboard test cases
-- CreateShipmentTest.java - Create shipment test cases```
+├── src/main/java
+│   │
+│   ├── pages
+│   │   ├── LoginPage.java
+│   │   ├── DashboardPage.java
+│   │   ├── CreateShipmentPage.java
+│   │   ├── SearchShipmentPage.java
+│   │   └── UpdateStatusPage.java
+│   │
+│   └── utils
+│       └── ConfigReader.java
+│
+├── src/test/java
+│   │
+│   ├── base
+│   │   └── BaseTest.java
+│   │
+│   └── tests
+│       ├── LoginTest.java
+│       ├── DashboardTest.java
+│       ├── CreateShipmentTest.java
+│       ├── SearchShipmentTest.java
+│       └── UpdateStatusTest.java
+│
+├── src/test/resources
+│   └── shipmentData.properties
+│
+├── pom.xml
+├── testng.xml
+└── README.md
+```
 
 ---
 
-## Framework Design
+## Framework Highlights
 
-- Page Object Model (POM)
-- Reusable BaseTest class
-- TestNG Test Execution
-- Maven Dependency Management
-- WebDriverManager for browser setup
-- Separate Page Classes and Test Classes
-
----
-
-## How to Run
-
-1. Clone the repository
-
-2. Open the project in Eclipse or VS Code.
-
-3. Install Maven dependencies.
-
-4. Run `testng.xml` as a TestNG Suite.
+- Page Object Model (POM) architecture
+- Reusable BaseTest for browser setup and teardown
+- TestNG based test execution
+- Maven dependency management
+- WebDriverManager for browser driver handling
+- Separate page classes and test classes
+- External test data management using properties file
 
 ---
 
-## Upcoming Enhancements
+## How To Run
 
-- Search Shipment Automation
-- Update Shipment Status Automation
-- End-to-End Workflow Automation
-- Screenshot Capture on Failure
-- Explicit Waits
-- Extent Reports
-- Jenkins CI Integration
+### Clone Repository
+
+```bash
+git clone <repository-url>
+```
+
+### Open Project
+
+Open the project in Eclipse or IntelliJ IDEA.
+
+### Install Maven Dependencies
+
+```bash
+mvn clean install
+```
+
+### Execute Test Suite
+
+Run using TestNG:
+
+```
+testng.xml
+```
+
+or execute through Maven:
+
+```bash
+mvn test
+```
+
+---
+
+## Future Enhancements
+
+- Screenshot capture on test failure
+- Extent Report integration
+- API testing integration
+- Database validation using JDBC
+- Jenkins CI/CD pipeline
+- Cross-browser execution
 
 ---
 
@@ -102,4 +180,6 @@ FastLogistics-Selenium
 
 QA Engineer | Manual & Automation Testing
 
-Java | Selenium | TestNG | Maven | SQL | GitHub
+Skills:
+
+Java | Selenium | TestNG | Maven | SQL | Git

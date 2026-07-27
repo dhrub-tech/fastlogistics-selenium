@@ -8,6 +8,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import utils.ConfigReader;
 
 /**
  * ============================================================
@@ -40,17 +41,21 @@ public class BaseTest {
         // Automatically download compatible ChromeDriver
         WebDriverManager.chromedriver().setup();
 
-        // Launch Chrome Browser
-        driver = new ChromeDriver();
+        // Browser configurable (Not just chrome)
+        String browser = ConfigReader.getProperty("browser");
+
+        if (browser.equalsIgnoreCase("chrome")) {
+            WebDriverManager.chromedriver().setup();
+            driver = new ChromeDriver();
+        }
 
         // Maximize browser window
         driver.manage().window().maximize();
 
-        // Wait up to 10 seconds while locating elements
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+       //Removed implicit wait	
 
         // Open FastLogistics Login Page
-        driver.get("http://127.0.0.1:5500/login.html");
+        driver.get(ConfigReader.getProperty("url"));
 
     }
 

@@ -13,89 +13,77 @@ public class DashboardTest extends BaseTest {
     private DashboardPage dashboard;
 
     @BeforeMethod
-    public void loginToApplication() {
-
+    public void loginToApplication() 
+    {
         LoginPage login = new LoginPage(driver);
         login.login("admin", "admin123");
 
         dashboard = new DashboardPage(driver);
     }
-
     @Test
-    public void verifyDashboardTitle() {
-
-        Assert.assertEquals(driver.getTitle(),
-                "FastLogistics Dashboard");
+    public void verifyDashboardTitle() 
+    {
+        Assert.assertEquals(driver.getTitle(), "FastLogistics Dashboard");
     }
 
     @Test
-    public void verifyDashboardURL() {
-
+    public void verifyDashboardURL() 
+    {
         Assert.assertTrue(
                 driver.getCurrentUrl().contains("dashboard"),
-                "Dashboard URL is incorrect");
+                "Dashboard URL is incorrect"
+        );
     }
 
     @Test
-    public void verifyDashboardHeading() {
-
+    public void verifyDashboardHeading() 
+    {
         Assert.assertEquals(
                 dashboard.getDashboardHeading(),
-                "FastLogistics Dashboard");
+                "FastLogistics Dashboard"
+        );
     }
 
     @Test
-    public void verifyDashboardLoaded() {
-
+    public void verifyDashboardLoaded() 
+    {
         Assert.assertTrue(driver.getTitle().contains("Dashboard"));
         Assert.assertTrue(driver.getCurrentUrl().contains("dashboard"));
     }
 
     @Test
-    public void verifyCreateShipmentNavigation() {
-
+    public void verifyCreateShipmentNavigation() 
+    {
         dashboard.clickCreateShipment();
-
-        Assert.assertTrue(
-                driver.getCurrentUrl().contains("create-shipment"));
+        Assert.assertTrue(driver.getCurrentUrl().contains("create-shipment"));
     }
 
     @Test
-    public void verifySearchShipmentNavigation() {
-
+    public void verifySearchShipmentNavigation() 
+    {
         dashboard.clickSearchShipment();
-
-        Assert.assertTrue(
-                driver.getCurrentUrl().contains("search-shipment"));
+        Assert.assertTrue(driver.getCurrentUrl().contains("search-shipment"));
     }
 
     @Test
-    public void verifyUpdateStatusNavigation() {
-
+    public void verifyUpdateStatusNavigation() 
+    {
         dashboard.clickUpdateStatus();
-
-        Assert.assertTrue(
-                driver.getCurrentUrl().contains("update-status"));
+        Assert.assertTrue(driver.getCurrentUrl().contains("update-status"));
     }
 
     @Test
-    public void verifyLogout() {
-
+    public void verifyLogout() 
+    {
         dashboard.clickLogout();
-
-        Assert.assertTrue(
-                driver.getCurrentUrl().contains("login"));
+        Assert.assertTrue(driver.getCurrentUrl().contains("login"));
     }
 
     @Test
-    public void verifyBackAfterLogout() {
-
+    public void verifyBackAfterLogout() 
+    {
         dashboard.clickLogout();
-
         driver.navigate().back();
-
-        Assert.assertTrue(
-                driver.getCurrentUrl().contains("login"));
+        Assert.assertTrue(driver.getCurrentUrl().contains("login"));
     }
-
 }

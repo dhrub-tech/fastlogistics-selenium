@@ -1,40 +1,34 @@
 package utils;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class ConfigReader {
 
-    private static Properties properties;
-
+    private static Properties properties = new Properties();
 
     static {
 
         try {
 
-            FileInputStream file =
-            new FileInputStream(
-            "src/test/resources/shipmentData.properties"
-            );
+            InputStream input =
+                    ConfigReader.class.getClassLoader()
+                            .getResourceAsStream("config.properties");
 
+            if (input == null) {
+                throw new RuntimeException("config.properties file not found.");
+            }
 
-            properties = new Properties();
+            properties.load(input);
 
-            properties.load(file);
+        } catch (IOException e) {
 
-            file.close();
-
-        }
-
-        catch(IOException e) {
-
-            e.printStackTrace();
+            throw new RuntimeException("Unable to load config.properties", e);
 
         }
 
     }
-
 
     public static String getProperty(String key) {
 

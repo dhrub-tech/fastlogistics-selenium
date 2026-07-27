@@ -1,133 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
+<suite name="FastLogistics Automation Suite" verbose="2" parallel="false" preserve-order="true">
 
-<!DOCTYPE suite SYSTEM 
-"https://testng.org/testng-1.0.dtd">
-
-
-<!-- ================================================= -->
-<!-- FastLogistics Automation Test Execution Suite      -->
-<!-- Selenium + Java + TestNG Framework                -->
-<!-- ================================================= -->
-
-
-<suite name="FastLogistics Automation Suite"
-       verbose="2"
-       parallel="false"
-       preserve-order="true">
-
-
-
-
-
-    <!-- ============================================== -->
-    <!-- Smoke Testing                                 -->
-    <!-- Basic application validation                  -->
-    <!-- ============================================== -->
-
-
+    <!-- Smoke Test Suite: Fast checks for critical functionality -->
     <test name="Smoke Tests">
-
-
         <classes>
-
-
-            <!-- Login validation -->
-
-            <class name="tests.LoginTest"/>
-
-
-
-            <!-- Dashboard validation -->
-
-            <class name="tests.DashboardTest"/>
-
-
+            <class name="tests.LoginTest" />
+            <class name="tests.DashboardTest" />
         </classes>
-
-
     </test>
 
-
-
-
-
-
-
-    <!-- ============================================== -->
-    <!-- Shipment Management Module                    -->
-    <!-- Core logistics business scenarios             -->
-    <!-- ============================================== -->
-
-
-    <test name="Shipment Management Tests">
-
-
+    <!-- Functional & Feature Tests -->
+    <test name="Shipment Module Tests">
         <classes>
-
-
-
-            <!-- Create Shipment positive scenario -->
-
-            <class name="tests.CreateShipmentTest"/>
-
-
-
-
-            <!-- Shipment field validations -->
-
-            <class name="tests.CreateShipmentValidationTest"/>
-
-
-
-
-            <!-- Search shipment functionality -->
-
-            <class name="tests.SearchShipmentTest"/>
-
-
-
-
-            <!-- Update shipment status -->
-
-            <class name="tests.UpdateStatusTest"/>
-
-
+            <class name="tests.CreateShipmentTest" />
+            <class name="tests.CreateShipmentValidationTest" />
+            <class name="tests.SearchShipmentTest" />
+            <class name="tests.UpdateStatusTest" />
         </classes>
-
-
     </test>
 
-
-
-
-
-
-
-    <!-- ============================================== -->
-    <!-- Complete Business Flow                         -->
-    <!-- Login                                         -->
-    <!-- Create Shipment                               -->
-    <!-- Search Shipment                               -->
-    <!-- Update Status                                 -->
-    <!-- Logout                                        -->
-    <!-- ============================================== -->
-
-
-    <test name="End To End Tests">
-
-
+    <!-- End-To-End Workflows -->
+    <test name="E2E Regression Tests">
         <classes>
-
-
-            <class name="tests.EndToEndTest"/>
-
-
+            <class name="tests.EndToEndTest" />
         </classes>
-
-
     </test>
-
-
 
 </suite>

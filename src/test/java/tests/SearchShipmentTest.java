@@ -1,81 +1,130 @@
 package tests;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
+import org.testng.annotations.Listeners;
 import base.BaseTest;
 import pages.CreateShipmentPage;
 import pages.DashboardPage;
 import pages.LoginPage;
 import pages.SearchShipmentPage;
 
+@Listeners(listeners.TestListener.class)
 public class SearchShipmentTest extends BaseTest {
 
-    LoginPage loginPage;
-    DashboardPage dashboardPage;
-    CreateShipmentPage createShipmentPage;
-    SearchShipmentPage searchShipmentPage;
-
-    @BeforeMethod
-    public void loginApplication() {
-        loginPage = new LoginPage(driver);
-        dashboardPage = new DashboardPage(driver);
-        createShipmentPage = new CreateShipmentPage(driver);
-        searchShipmentPage = new SearchShipmentPage(driver);
-
-        loginPage.login("admin", "admin123");
+    private void login() {
+        LoginPage login = new LoginPage(driver);
+        login.login("admin", "admin123");
     }
 
-    @Test(priority = 1)
-    public void verifySearchExistingShipment() {
-        dashboardPage.clickCreateShipment();
-        createShipmentPage.createShipment("SHIP101", "Amazon", "Rahul", "Delhi", "Mumbai", "25", "Express");
+    private void createTestShipment(String shipmentId) {
+        DashboardPage dashboard = new DashboardPage(driver);
+        dashboard.clickCreateShipment();
 
-        driver.get("http://127.0.0.1:5500/search-shipment.html");
-        searchShipmentPage.searchShipment("SHIP101");
+        CreateShipmentPage shipment = new CreateShipmentPage(driver);
+        shipment.createShipment(
+                shipmentId,
+                "Amazon",
+                "Flipkart",
+                "Kolkata",
+                "Delhi",
+                "25",
+                "Express",
+                "High",
+                "India"
+        );
 
-        Assert.assertTrue(searchShipmentPage.getSearchResult().contains("SHIP101"));
+        Assert.assertEquals(
+                shipment.getMessage(),
+                "Shipment created successfully!",
+                "Test shipment was not created successfully."
+        );
+
+        shipment.clickBackToDashboard();
     }
 
-    @Test(priority = 2)
-    public void verifyShipmentNotFound() {
-        driver.get("http://127.0.0.1:5500/search-shipment.html");
-        searchShipmentPage.searchShipment("SHIP999");
-
-        Assert.assertTrue(searchShipmentPage.getSearchResult().contains("Shipment Not Found"));
+    private SearchShipmentPage openSearchShipmentPage() {
+        DashboardPage dashboard = new DashboardPage(driver);
+        dashboard.clickSearchShipment();
+        return new SearchShipmentPage(driver);
     }
 
-    @Test(priority = 3)
-    public void verifySenderNameDisplayed() {
-        dashboardPage.clickCreateShipment();
-        createShipmentPage.createShipment("SHIP102", "Flipkart", "Ankit", "Pune", "Kolkata", "30", "Standard");
+    @Test
+    public void verifyExistingShipment() {
+        login();
+        createTestShipment("SHIP201");
 
-        driver.get("http://127.0.0.1:5500/search-shipment.html");
-        searchShipmentPage.searchShipment("SHIP102");
+        SearchShipmentPage search = openSearchShipmentPage();
+        search.searchShipment("SHIP201");
 
-        Assert.assertTrue(searchShipmentPage.getSearchResult().contains("Flipkart"));
+        Assert.assertTrue(
+                search.isSearchResultDisplayed(),
+                "Search result should be displayed."
+        );
+
+        Assert.assertTrue(
+                search.isSearchResultContains("Shipment Found"),
+                "Shipment Found message should be displayed."
+        );
+
+        Assert.assertTrue(
+                search.isSearchResultContains("SHIP201"),
+                "Search result should contain shipment ID SHIP201."
+        );
     }
 
-    @Test(priority = 4)
-    public void verifyDefaultStatusPending() {
-        dashboardPage.clickCreateShipment();
-        createShipmentPage.createShipment("SHIP103", "Ajio", "Rohit", "Noida", "Hyderabad", "20", "Express");
+    @Test
+    public void verifyNonExistingShipment() {
+        login();
 
-        driver.get("http://127.0.0.1:5500/search-shipment.html");
-        searchShipmentPage.searchShipment("SHIP103");
+        SearchShipmentPage search = openSearchShipmentPage();
+        search.searchShipment("SHIP99999");
 
-        Assert.assertTrue(searchShipmentPage.getSearchResult().contains("Pending"));
+        Assert.assertTrue(
+                search.isSearchResultDisplayed(),
+                "Search result should be displayed."
+        );
+
+        Assert.assertTrue(
+                search.isSearchResultContains("Shipment Not Found"),
+                "Shipment Not Found message should be displayed."
+        );
     }
 
-    @Test(priority = 5)
-    public void verifyShipmentTypeDisplayed() {
-        dashboardPage.clickCreateShipment();
-        createShipmentPage.createShipment("SHIP104", "Myntra", "Amit", "Delhi", "Jaipur", "50", "Standard");
+    @Test
+    public void verifyEmptyShipmentId() {
+        login();
 
-        driver.get("http://127.0.0.1:5500/search-shipment.html");
-        searchShipmentPage.searchShipment("SHIP104");
+        SearchShipmentPage search = openSearchShipmentPage();
+        search.enterShipmentId("");
+        search.clickSearch();
 
-        Assert.assertTrue(searchShipmentPage.getSearchResult().contains("Standard"));
+        Assert.assertTrue(
+                search.isSearchResultDisplayed(),
+                "Search result should be displayed."
+        );
+
+        Assert.assertTrue(
+                search.isSearchResultContains("Shipment Not Found"),
+                "Empty shipment ID should return Shipment Not Found."
+        );
+    }
+
+    @Test
+    public void verifyInvalidShipmentId() {
+        login();
+
+        SearchShipmentPage search = openSearchShipmentPage();
+        search.searchShipment("@@@INVALID@@@");
+
+        Assert.assertTrue(
+                search.isSearchResultDisplayed(),
+                "Search result should be displayed."
+        );
+
+        Assert.assertTrue(
+                search.isSearchResultContains("Shipment Not Found"),
+                "Invalid shipment ID should return Shipment Not Found."
+        );
     }
 }

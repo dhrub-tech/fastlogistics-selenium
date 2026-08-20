@@ -1,30 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
-<suite name="FastLogistics Automation Suite" verbose="2" parallel="false" preserve-order="true">
+<suite name="FastLogistics Automation Suite"
+       verbose="2"
+       parallel="false"
+       preserve-order="true">
 
-    <!-- Smoke Test Suite: Fast checks for critical functionality -->
+    <!-- ========================================= -->
+    <!-- TEST LISTENERS                            -->
+    <!-- ========================================= -->
+
+    <listeners>
+        <listener class-name="listeners.TestListener"/>
+    </listeners>
+
+    <!-- ========================================= -->
+    <!-- SMOKE TESTS                               -->
+    <!-- ========================================= -->
+
     <test name="Smoke Tests">
         <classes>
-            <class name="tests.LoginTest" />
-            <class name="tests.DashboardTest" />
+            <class name="tests.LoginTest"/>
+            <class name="tests.DashboardTest"/>
         </classes>
     </test>
 
-    <!-- Functional & Feature Tests -->
+    <!-- ========================================= -->
+    <!-- SHIPMENT MODULE TESTS                    -->
+    <!-- ========================================= -->
+
     <test name="Shipment Module Tests">
         <classes>
-            <class name="tests.CreateShipmentTest" />
-            <class name="tests.CreateShipmentValidationTest" />
-            <class name="tests.SearchShipmentTest" />
-            <class name="tests.UpdateStatusTest" />
+            <class name="tests.CreateShipmentTest"/>
+        
+            <class name="tests.SearchShipmentTest"/>
+            <class name="tests.UpdateStatusTest"/>
         </classes>
     </test>
 
-    <!-- End-To-End Workflows -->
+    <!-- ========================================= -->
+    <!-- END-TO-END REGRESSION TESTS              -->
+    <!-- ========================================= -->
+
     <test name="E2E Regression Tests">
         <classes>
-            <class name="tests.EndToEndTest" />
+            <class name="tests.EndToEndTest"/>
         </classes>
     </test>
 

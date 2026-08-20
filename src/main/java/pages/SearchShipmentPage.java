@@ -3,121 +3,55 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * ===========================================================
- * Class Name : SearchShipmentPage
- * Project    : FastLogistics Selenium Framework
- *
- * Description:
- * Page Object class for Search Shipment page.
- * Contains all reusable methods required to search
- * and verify shipment information.
- * ===========================================================
- */
+public class SearchShipmentPage extends BasePage {
 
-public class SearchShipmentPage {
+    private final By shipmentIdTextbox = By.id("searchShipmentId");
+    private final By searchButton = By.cssSelector("#searchBtn, #searchShipmentBtn, button[onclick*='searchShipment']");
+    private final By searchResult = By.id("searchResult");
 
-    // WebDriver instance
-    private WebDriver driver;
-
-    // ==========================
-    // Locators
-    // ==========================
-
-    private By shipmentIdTextbox = By.id("searchShipmentId");
-
-    private By searchButton = By.id("searchBtn");
-
-    private By searchResult = By.id("searchResult");
-
-    /**
-     * Constructor
-     *
-     * @param driver WebDriver instance
-     */
     public SearchShipmentPage(WebDriver driver) {
-
-        this.driver = driver;
-
+        super(driver);
     }
 
-    /**
-     * Enter Shipment ID.
-     *
-     * @param shipmentId Shipment ID
-     */
     public void enterShipmentId(String shipmentId) {
-
-        driver.findElement(shipmentIdTextbox).clear();
-
-        driver.findElement(shipmentIdTextbox).sendKeys(shipmentId);
-
+        enterText(shipmentIdTextbox, shipmentId);
     }
 
-    /**
-     * Click Search button.
-     */
     public void clickSearch() {
-
-        driver.findElement(searchButton).click();
-
+        click(searchButton);
+        waitForElement(searchResult);
     }
 
-    /**
-     * Reusable business method.
-     *
-     * @param shipmentId Shipment ID
-     */
     public void searchShipment(String shipmentId) {
-
         enterShipmentId(shipmentId);
-
         clickSearch();
-
     }
 
-    /**
-     * Returns complete search result.
-     *
-     * @return Search Result
-     */
     public String getSearchResult() {
-
-        return driver.findElement(searchResult).getText();
-
+        return getText(searchResult);
     }
 
-    /**
-     * Returns current URL.
-     *
-     * @return Browser URL
-     */
-    public String getCurrentURL() {
-
-        return driver.getCurrentUrl();
-
+    public boolean isSearchResultDisplayed() {
+        return isDisplayed(searchResult);
     }
 
-    /**
-     * Returns page title.
-     *
-     * @return Page Title
-     */
-    public String getPageTitle() {
-
-        return driver.getTitle();
-
-    }
-
-    /**
-     * Checks Search button visibility.
-     *
-     * @return true if displayed
-     */
     public boolean isSearchButtonDisplayed() {
-
-        return driver.findElement(searchButton).isDisplayed();
-
+        return isDisplayed(searchButton);
     }
 
+    public boolean isShipmentIdFieldDisplayed() {
+        return isDisplayed(shipmentIdTextbox);
+    }
+
+    public boolean isSearchResultContains(String text) {
+        return waitForText(searchResult, text);
+    }
+
+    public String getCurrentURL() {
+        return getCurrentUrl();
+    }
+
+    public String getPageTitle() {
+        return getPageTitle();
+    }
 }

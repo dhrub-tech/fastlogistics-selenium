@@ -3,144 +3,52 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * ---------------------------------------------------------
- * Page Name  : LoginPage
- * Project    : FastLogistics Automation Framework
- * Author     : Dhrubjyoti Chattopadhyay
- *
- * Description:
- * This class contains all web elements and reusable actions
- * related to the Login Page.
- *
- * Following Page Object Model (POM) design.
- * ---------------------------------------------------------
- */
-public class LoginPage {
+public class LoginPage extends BasePage {
 
-    // Driver instance used to interact with browser
-    WebDriver driver;
+    private final By usernameTextbox = By.id("username");
+    private final By passwordTextbox = By.id("password");
+    private final By loginButton = By.id("loginBtn");
+    private final By errorMessage = By.id("errorMessage");
 
-    /**
-     * Constructor
-     * Initializes the driver when LoginPage object is created.
-     *
-     * @param driver WebDriver instance from BaseTest
-     */
-    public LoginPage(WebDriver driver) 
-    {
-        this.driver = driver;
+    public LoginPage(WebDriver driver) {
+        super(driver);
     }
 
-    // ===========================
-    // Locators
-    // ===========================
-
-    // Username textbox
-    private By usernameTextbox = By.id("username");
-
-    // Password textbox
-    private By passwordTextbox = By.id("password");
-
-    // Login button
-    private By loginButton = By.id("loginBtn");
-
-    // Error message displayed after invalid login
-    private By errorMessage = By.id("errorMessage");
-
-    // ===========================
-    // Action Methods
-    // ===========================
-
-    /**
-     * Enters username into Username textbox.
-     *
-     * @param username Valid/Invalid username
-     */
     public void enterUsername(String username) {
-        driver.findElement(usernameTextbox).clear();
-        driver.findElement(usernameTextbox).sendKeys(username);
+        enterText(usernameTextbox, username);
     }
 
-    /**
-     * Enters password into Password textbox.
-     *
-     * @param password Valid/Invalid password
-     */
     public void enterPassword(String password) {
-        driver.findElement(passwordTextbox).clear();
-        driver.findElement(passwordTextbox).sendKeys(password);
+        enterText(passwordTextbox, password);
     }
 
-    /**
-     * Clicks Login button.
-     */
     public void clickLoginButton() {
-        driver.findElement(loginButton).click();
+        click(loginButton);
     }
 
-    /**
-     * Reusable login method.
-     * Combines username,password and login click.
-     *
-     * @param username User name
-     * @param password Password
-     */
-    public void login(String username, String password) 
-    {
-
+    public void login(String username, String password) {
         enterUsername(username);
-
         enterPassword(password);
-
         clickLoginButton();
-
     }
 
-    /**
-     * Returns error message displayed after invalid login.
-     *
-     * @return Error message text
-     */
     public String getErrorMessage() {
-
-        return driver.findElement(errorMessage).getText();
-
+        return getText(errorMessage);
     }
 
-    /**
-     * Returns current browser URL.
-     *
-     * Used for URL validation after login.
-     *
-     * @return Current URL
-     */
-    public String getCurrentURL() {
-
-        return driver.getCurrentUrl();
-
+    public boolean isErrorMessageDisplayed() {
+        return isDisplayed(errorMessage);
     }
 
-    /**
-     * Returns page title.
-     *
-     * @return Login Page Title
-     */
-    public String getPageTitle() {
-
-        return driver.getTitle();
-
-    }
-
-    /**
-     * Checks whether Login button is visible.
-     *
-     * @return true if displayed
-     */
     public boolean isLoginButtonDisplayed() {
-
-        return driver.findElement(loginButton).isDisplayed();
-
+        return isDisplayed(loginButton);
     }
 
+    public String getCurrentURL() {
+        return getCurrentUrl();
+    }
+
+    public String getPageTitle() {
+        return driver.getTitle();
+    }
 }

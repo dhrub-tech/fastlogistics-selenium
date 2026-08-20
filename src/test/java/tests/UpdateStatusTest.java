@@ -1,78 +1,113 @@
 package tests;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import base.BaseTest;
 import pages.CreateShipmentPage;
+import pages.DashboardPage;
 import pages.LoginPage;
+import pages.SearchShipmentPage;
 import pages.UpdateStatusPage;
 
+@Listeners(listeners.TestListener.class)
 public class UpdateStatusTest extends BaseTest {
 
-    private LoginPage loginPage;
-    private CreateShipmentPage createShipmentPage;
-    private UpdateStatusPage updateStatusPage;
-
-    @BeforeMethod
-    public void loginAndNavigate() {
-        loginPage = new LoginPage(driver);
-        createShipmentPage = new CreateShipmentPage(driver);
-        updateStatusPage = new UpdateStatusPage(driver);
-
-        loginPage.login("admin", "admin123");
+    private void login() {
+        LoginPage login = new LoginPage(driver);
+        login.login("admin", "admin123");
     }
 
-    @Test(priority = 1)
-    public void verifyShipmentStatusUpdatedSuccessfully() {
-        driver.get("http://127.0.0.1:5500/create-shipment.html");
-        createShipmentPage.createShipment("SHIP500", "Amazon", "Rahul", "Delhi", "Mumbai", "20", "Express");
+    private void createTestShipment(String shipmentId) {
+        DashboardPage dashboard = new DashboardPage(driver);
+        dashboard.clickCreateShipment();
 
-        driver.get("http://127.0.0.1:5500/update-status.html");
-        updateStatusPage.updateShipmentStatus("SHIP500", "Delivered");
+        CreateShipmentPage shipment = new CreateShipmentPage(driver);
+        shipment.createShipment(
+                shipmentId,
+                "Amazon",
+                "Flipkart",
+                "Kolkata",
+                "Delhi",
+                "25",
+                "Express",
+                "High",
+                "India"
+        );
 
-        Assert.assertEquals(updateStatusPage.getUpdateMessage(), "Shipment status updated successfully!");
+        Assert.assertEquals(
+                shipment.getMessage(),
+                "Shipment created successfully!",
+                "Test shipment was not created successfully."
+        );
+
+        shipment.clickBackToDashboard();
     }
 
-    @Test(priority = 2)
-    public void verifyInvalidShipmentId() {
-        driver.get("http://127.0.0.1:5500/update-status.html");
-        updateStatusPage.updateShipmentStatus("SHIP999", "Delivered");
-
-        Assert.assertEquals(updateStatusPage.getUpdateMessage(), "Shipment ID not found.");
+    private UpdateStatusPage openUpdateStatusPage() {
+        DashboardPage dashboard = new DashboardPage(driver);
+        dashboard.clickUpdateStatus();
+        return new UpdateStatusPage(driver);
     }
 
-    @Test(priority = 3)
-    public void verifyStatusUpdatedToInTransit() {
-        driver.get("http://127.0.0.1:5500/create-shipment.html");
-        createShipmentPage.createShipment("SHIP501", "Flipkart", "Amit", "Pune", "Hyderabad", "15", "Standard");
+    private void verifyShipmentStatus(String shipmentId, String expectedStatus) {
+        DashboardPage dashboard = new DashboardPage(driver);
+        dashboard.clickSearchShipment();
 
-        driver.get("http://127.0.0.1:5500/update-status.html");
-        updateStatusPage.updateShipmentStatus("SHIP501", "In Transit");
+        SearchShipmentPage search = new SearchShipmentPage(driver);
+        search.searchShipment(shipmentId);
 
-        Assert.assertTrue(updateStatusPage.getUpdateMessage().contains("updated"));
+        Assert.assertTrue(
+                search.isSearchResultContains(expectedStatus),
+                "Expected shipment status '" + expectedStatus + "' was not displayed."
+        );
     }
 
-    @Test(priority = 4)
-    public void verifyStatusUpdatedToOutForDelivery() {
-        driver.get("http://127.0.0.1:5500/create-shipment.html");
-        createShipmentPage.createShipment("SHIP502", "Ajio", "Karan", "Noida", "Chennai", "18", "Express");
+    @Test
+    public void verifyPendingToInTransit() {
+        login();
+        createTestShipment("SHIP301");
 
-        driver.get("http://127.0.0.1:5500/update-status.html");
-        updateStatusPage.updateShipmentStatus("SHIP502", "Out For Delivery");
+        UpdateStatusPage update = openUpdateStatusPage();
+        update.updateShipmentStatus("SHIP301", "In Transit");
 
-        Assert.assertTrue(updateStatusPage.getUpdateMessage().contains("updated"));
+        Assert.assertEquals(
+                update.getUpdateMessage(),
+                "Shipment status updated successfully!"
+        );
+
+        update.clickBackButton();
+        verifyShipmentStatus("SHIP301", "In Transit");
     }
 
-    @Test(priority = 5)
-    public void verifyStatusUpdatedToDelivered() {
-        driver.get("http://127.0.0.1:5500/create-shipment.html");
-        createShipmentPage.createShipment("SHIP503", "Myntra", "Rohit", "Delhi", "Jaipur", "12", "Standard");
+    @Test
+    public void verifyPendingToDelivered() {
+        login();
+        createTestShipment("SHIP302");
 
-        driver.get("http://127.0.0.1:5500/update-status.html");
-        updateStatusPage.updateShipmentStatus("SHIP503", "Delivered");
+        UpdateStatusPage update = openUpdateStatusPage();
+        update.updateShipmentStatus("SHIP302", "Delivered");
 
-        Assert.assertEquals(updateStatusPage.getUpdateMessage(), "Shipment status updated successfully!");
+        Assert.assertEquals(
+                update.getUpdateMessage(),
+                "Shipment status updated successfully!"
+        );
+
+        update.clickBackButton();
+        verifyShipmentStatus("SHIP302", "Delivered");
+    }
+
+    @Test
+    public void verifyInvalidShipment() {
+        login();
+
+        UpdateStatusPage update = openUpdateStatusPage();
+        update.updateShipmentStatus("SHIP99999", "Delivered");
+
+        Assert.assertEquals(
+                update.getUpdateMessage(),
+                "Shipment ID not found."
+        );
     }
 }
